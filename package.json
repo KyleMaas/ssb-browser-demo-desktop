@@ -2,13 +2,13 @@
   "name": "ssb-browser-demo-desktop",
   "productName": "ssb-browser-demo-desktop",
   "version": "0.0.1",
-  "description": "My Electron application description",
+  "description": "Desktop version of ssb-browser-demo",
   "main": "src/index.js",
   "scripts": {
-    "postinstall": "pushd node_modules/ssb-browser-demo; npm install; npm run inline; popd; cp -a node_modules/ssb-browser-demo/dist/index.html ./src/index.html; cp -a node_modules/ssb-browser-demo/assets/noavatar.svg ./src/assets/noavatar.svg",
+    "compiledemo": "npm install; cd node_modules/ssb-browser-demo; npm install; npm run inline; cd ../..; cp -a node_modules/ssb-browser-demo/dist/index.html ./src/index.html; cp -a node_modules/ssb-browser-demo/assets/noavatar.svg ./src/assets/noavatar.svg",
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make",
+    "make": "electron-forge make --ignore='ssb-browser-demo'",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
@@ -23,16 +23,19 @@
       "packagerConfig": {},
       "makers": [
         {
-          "name": "@electron-forge/maker-squirrel",
+          "name": "electron-forge-maker-appimage",
+          "platforms": [
+            "linux"
+          ],
           "config": {
             "name": "ssb_browser_demo_desktop"
           }
         },
         {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "ssb_browser_demo_desktop"
+          }
         },
         {
           "name": "@electron-forge/maker-deb",
@@ -46,8 +49,7 @@
     }
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0",
-    "ssb-browser-demo": "github:arj03/ssb-browser-demo"
+    "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.54",
@@ -55,6 +57,8 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.54",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
     "@electron-forge/maker-zip": "^6.0.0-beta.54",
-    "electron": "11.2.3"
+    "electron": "11.2.3",
+    "electron-forge-maker-appimage": "github:trusktr/electron-forge-maker-appimage#patch-1",
+    "ssb-browser-demo": "github:arj03/ssb-browser-demo#5.1.1"
   }
 }
